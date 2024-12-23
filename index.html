@@ -10,14 +10,9 @@
     <div id="app">
       <h1>Sample Prepper API Test</h1>
 
-      <!-- <div class="upload-section">
-        <input type="file" id="audioFile" accept="audio/*" />
-        <button id="uploadBtn">Process Audio</button>
-      </div> -->
-
-      <div class="upload-section">
-        <div class="input-methods">
-          <div class="file-input">
+      <div class="grid-layout">
+        <div class="upload-section">
+          <div class="input-methods">
             <input type="file" id="audioFile" accept="audio/*" />
           </div>
 
@@ -35,17 +30,15 @@
           </div> -->
         </div>
         <button id="uploadBtn">Process Audio</button>
-      </div>
 
-      <div class="flex-row">
-        <!-- <div class="flex-col">
+        <!-- 
           <h2>Original Audio</h2>
           <div id="originalWaveform"></div>
-        </div>
-        <div class="flex-col">
+
+
           <h2>Processed Audio</h2>
           <div id="processedWaveform"></div>
-        </div> -->
+ -->
         <div class="options-section">
           <h2>Processing Options</h2>
           <div class="option">
@@ -147,6 +140,8 @@
         </div>
 
         <div class="results-section">
+          <div id="status"></div>
+
           <h2>Results</h2>
           <div class="audio-players">
             <div class="original-audio">
@@ -159,7 +154,6 @@
             </div>
           </div>
         </div>
-        <div id="status"></div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
