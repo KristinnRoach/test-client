@@ -5,6 +5,8 @@ import {
   updateAudioBuffer,
 } from './playback';
 import { initializeRecorder } from './recorder';
+// import { createRoot } from 'react-dom/client';
+// import StatusLog from './StatusLog';
 
 // API endpoint from the notebook
 // const LOCAL_API_URL = 'http://localhost:5001/process';
@@ -13,11 +15,12 @@ const COLAB_API_URL = 'https://singular-roughy-humane.ngrok-free.app/process';
 // DOM Elements type definition
 interface DOMElements {
   fileInput: HTMLInputElement;
+  sampleNameInput: HTMLInputElement;
   uploadBtn: HTMLButtonElement;
   normalizeOpt: HTMLInputElement;
   trimOpt: HTMLInputElement;
   tuneOpt: HTMLInputElement;
-  // saveToFirebaseOpt: HTMLInputElement;
+  saveToFirebaseOpt: HTMLInputElement;
   targetPitchInput: HTMLInputElement;
   formatOpt: HTMLSelectElement;
   pitchSection: HTMLDivElement;
@@ -33,22 +36,26 @@ interface ProcessingOptions {
   normalize: boolean;
   trim: boolean;
   tune: boolean;
+  sampleName?: string;
+  saveToFirebase?: boolean;
   targetPitchHz?: number;
   outputFormat?: 'wav' | 'mp3' | 'webm';
+  returnType?: 'url' | 'blob';
 }
 
 // Initialize DOM elements
 function initializeElements(): DOMElements | null {
   const elements = {
     fileInput: document.getElementById('audioFile') as HTMLInputElement,
+    sampleNameInput: document.getElementById('sampleName') as HTMLInputElement,
     uploadBtn: document.getElementById('uploadBtn') as HTMLButtonElement,
     normalizeOpt: document.getElementById('normalizeOpt') as HTMLInputElement,
     trimOpt: document.getElementById('trimOpt') as HTMLInputElement,
     tuneOpt: document.getElementById('tuneOpt') as HTMLInputElement,
 
-    // saveToFirebaseOpt: document.getElementById(
-    //   'saveToFirebaseOpt'
-    // ) as HTMLInputElement,
+    saveToFirebaseOpt: document.getElementById(
+      'saveToFirebaseOpt'
+    ) as HTMLInputElement,
 
     formatOpt: document.getElementById('formatOpt') as HTMLSelectElement,
 
@@ -80,14 +87,13 @@ function initializeElements(): DOMElements | null {
 function initializeEventListeners(elements: DOMElements) {
   const {
     fileInput,
+    sampleNameInput,
     uploadBtn,
     tuneOpt,
     pitchSection,
     normalizeOpt,
     trimOpt,
-
-    // saveToFirebaseOpt,
-
+    saveToFirebaseOpt,
     formatOpt,
     targetPitchInput,
     originalAudio,
@@ -112,6 +118,19 @@ function initializeEventListeners(elements: DOMElements) {
     }
   });
 
+  // Sample name input handler
+  sampleNameInput.addEventListener('input', (event: Event) => {
+    const sampleName = (event.target as HTMLInputElement).value;
+    if (sampleName) {
+      //   sampleNameInput.setCustomValidity('');
+      let dummy = 0;
+      dummy = 3;
+    }
+    // else {
+    //   sampleNameInput.setCustomValidity('Sample name is required');
+    // }
+  });
+
   // Auto-tune option toggle
   tuneOpt.addEventListener('change', () => {
     pitchSection.style.display = tuneOpt.checked ? 'block' : 'none';
@@ -129,8 +148,8 @@ function initializeEventListeners(elements: DOMElements) {
         trim: trimOpt.checked,
         tune: tuneOpt.checked,
         outputFormat: formatOpt.value as 'wav' | 'mp3' | 'webm',
-        // saveToFirebase: saveToFirebaseOpt.checked,
-        // returnType: saveToFirebaseOpt.checked ? 'url' : 'blob',
+        saveToFirebase: saveToFirebaseOpt.checked,
+        returnType: saveToFirebaseOpt.checked ? 'url' : 'blob',
       };
 
       if (options.tune) {
@@ -140,7 +159,7 @@ function initializeEventListeners(elements: DOMElements) {
       // Process the audio
       const result = await processAudio(file, options, statusDiv);
 
-      // // Handle the result
+      // // // Handle the result
       // if (typeof result === 'string') {
       //   // Firebase URL
       //   processedAudio.src = result;
@@ -205,6 +224,7 @@ async function processAudio(
 
 function updateStatus(message: string, statusDiv: HTMLDivElement) {
   statusDiv.textContent = message;
+  // (window as any).addStatusLog?.(message);
 }
 
 // Test server connection
@@ -237,6 +257,10 @@ async function initializeApp() {
   if (elements) {
     await testServerConnection(elements.statusDiv);
     initializeEventListeners(elements);
+
+    // Initialize status log component
+    //const statusLogRoot = createRoot(document.getElementById('status-log')!);
+    //statusLogRoot.render(<StatusLog />);
 
     // Initialize the recorder
     initializeRecorder(

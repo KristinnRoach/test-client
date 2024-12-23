@@ -20,9 +20,18 @@
           <div class="file-input">
             <input type="file" id="audioFile" accept="audio/*" />
           </div>
+
           <div class="recorder-input">
             <button id="recordBtn" class="record-button">Record</button>
             <span id="recordingTime" class="recording-time"></span>
+          </div>
+
+          <div class="sample-name-section">
+            <input
+              type="text"
+              id="sampleName"
+              placeholder="Sample name (optional)"
+            />
           </div>
         </div>
         <button id="uploadBtn">Process Audio</button>
@@ -43,10 +52,10 @@
           <label for="tuneOpt">Auto-tune</label>
         </div>
 
-        <!-- <div class="option">
+        <div class="option">
           <input type="checkbox" id="saveToFirebaseOpt" />
           <label for="saveToFirebaseOpt">Save to Firebase</label>
-        </div> -->
+        </div>
 
         <div class="option">
           <label for="formatOpt">Output Format:</label>

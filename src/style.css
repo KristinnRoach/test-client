@@ -147,3 +147,20 @@ h3 {
   font-family: monospace;
   font-size: 1.1em;
 }
+
+input[type='file'] {
+  margin-bottom: 0.5rem;
+}
+
+.sample-name-section {
+  margin: 0.5rem 0;
+}
+
+#sampleName {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+  font-size: 0.9em;
+}

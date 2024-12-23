@@ -5,6 +5,7 @@ interface AudioState {
   buffer: AudioBuffer | null;
   fadeOutTime: number;
   masterCompressor: DynamicsCompressorNode | null;
+  sampleName: string;
 }
 
 interface ActiveNote {
@@ -15,8 +16,9 @@ interface ActiveNote {
 const audioState: AudioState = {
   context: null,
   buffer: null,
-  fadeOutTime: 0.1, // 100ms default fadeout
+  fadeOutTime: 0.15, // 100ms default fadeout
   masterCompressor: null,
+  sampleName: '',
 };
 
 const activeNotes = new Map<string, ActiveNote>();
@@ -30,9 +32,10 @@ function midiNoteToPlaybackRate(midiNote: number): number {
 function updateFadeOutSlider() {
   const slider = document.getElementById('fadeOutTime') as HTMLInputElement;
   if (slider && audioState.buffer) {
-    slider.max = audioState.buffer.duration.toString();
+    const maxTemp = audioState.buffer.duration / 2;
+    slider.max = maxTemp.toString();
     // Set a reasonable default (100ms or 10% of duration, whichever is smaller)
-    const defaultFade = Math.min(0.1, audioState.buffer.duration * 0.1);
+    const defaultFade = Math.min(0.15, audioState.buffer.duration * 0.15);
     slider.value = defaultFade.toString();
     audioState.fadeOutTime = defaultFade;
   }
