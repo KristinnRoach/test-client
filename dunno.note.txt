@@ -1,0 +1,200 @@
+
+// import './style.css';
+
+// // API endpoint from the notebook
+// const API_URL = 'https://singular-roughy-humane.ngrok-free.app/process';
+
+// // DOM Elements type definition
+// interface DOMElements {
+//   fileInput: HTMLInputElement;
+//   uploadBtn: HTMLButtonElement;
+//   normalizeOpt: HTMLInputElement;
+//   trimOpt: HTMLInputElement;
+//   tuneOpt: HTMLInputElement;
+//   saveToFirebaseOpt: HTMLInputElement;
+//   targetPitchInput: HTMLInputElement;
+//   pitchSection: HTMLDivElement;
+//   originalAudio: HTMLAudioElement;
+//   processedAudio: HTMLAudioElement;
+//   statusDiv: HTMLDivElement;
+// }
+
+// // Type definitions
+// interface ProcessingOptions {
+//   normalize: boolean;
+//   trim: boolean;
+//   tune: boolean;
+//   saveToFirebase: boolean;
+//   targetPitch?: number;
+//   returnType: 'blob' | 'url';
+// }
+
+// // Initialize DOM elements
+// function initializeElements(): DOMElements | null {
+//   const elements = {
+//     fileInput: document.getElementById('audioFile') as HTMLInputElement,
+//     uploadBtn: document.getElementById('uploadBtn') as HTMLButtonElement,
+//     normalizeOpt: document.getElementById('normalizeOpt') as HTMLInputElement,
+//     trimOpt: document.getElementById('trimOpt') as HTMLInputElement,
+//     tuneOpt: document.getElementById('tuneOpt') as HTMLInputElement,
+//     saveToFirebaseOpt: document.getElementById(
+//       'saveToFirebaseOpt'
+//     ) as HTMLInputElement,
+//     targetPitchInput: document.getElementById(
+//       'targetPitch'
+//     ) as HTMLInputElement,
+//     pitchSection: document.querySelector('.pitch-section') as HTMLDivElement,
+//     originalAudio: document.getElementById('originalAudio') as HTMLAudioElement,
+//     processedAudio: document.getElementById(
+//       'processedAudio'
+//     ) as HTMLAudioElement,
+//     statusDiv: document.getElementById('status') as HTMLDivElement,
+//   };
+
+//   // Verify all elements exist
+//   for (const [key, element] of Object.entries(elements)) {
+//     if (!element) {
+//       console.error(`Element not found: ${key}`);
+//       return null;
+//     }
+//   }
+
+//   return elements;
+// }
+
+// // Initialize event listeners
+// function initializeEventListeners(elements: DOMElements) {
+//   const {
+//     fileInput,
+//     uploadBtn,
+//     tuneOpt,
+//     pitchSection,
+//     normalizeOpt,
+//     trimOpt,
+//     saveToFirebaseOpt,
+//     targetPitchInput,
+//     originalAudio,
+//     processedAudio,
+//     statusDiv,
+//   } = elements;
+
+//   // Disable upload button initially
+//   uploadBtn.disabled = true;
+
+//   // File selection handler
+//   fileInput.addEventListener('change', (event: Event) => {
+//     const file = (event.target as HTMLInputElement).files?.[0];
+//     if (file) {
+//       uploadBtn.disabled = false;
+//       originalAudio.src = URL.createObjectURL(file);
+//     } else {
+//       uploadBtn.disabled = true;
+//     }
+//   });
+
+//   // Auto-tune option toggle
+//   tuneOpt.addEventListener('change', () => {
+//     pitchSection.style.display = tuneOpt.checked ? 'block' : 'none';
+//   });
+
+//   // Upload button handler
+//   uploadBtn.addEventListener('click', async () => {
+//     const file = fileInput.files?.[0];
+//     if (!file) return;
+
+//     try {
+//       // Gather options
+//       const options: ProcessingOptions = {
+//         normalize: normalizeOpt.checked,
+//         trim: trimOpt.checked,
+//         tune: tuneOpt.checked,
+//         saveToFirebase: saveToFirebaseOpt.checked,
+//         returnType: saveToFirebaseOpt.checked ? 'url' : 'blob',
+//       };
+
+//       if (options.tune) {
+//         options.targetPitch = parseFloat(targetPitchInput.value);
+//       }
+
+//       // Process the audio
+//       const result = await processAudio(file, options, statusDiv);
+
+//       // Handle the result
+//       if (typeof result === 'string') {
+//         // Firebase URL
+//         processedAudio.src = result;
+//         updateStatus('Audio processed and uploaded to Firebase', statusDiv);
+//       } else {
+//         // Blob result
+//         processedAudio.src = URL.createObjectURL(result);
+//         updateStatus('Audio processed successfully', statusDiv);
+//       }
+//     } catch (error) {
+//       updateStatus(
+//         `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+//         statusDiv
+//       );
+//     }
+//   });
+// }
+
+// async function processAudio(
+//   file: File,
+//   options: ProcessingOptions,
+//   statusDiv: HTMLDivElement
+// ): Promise<Blob | string> {
+//   const formData = new FormData();
+//   formData.append('file', file);
+//   formData.append('options', JSON.stringify(options));
+
+//   try {
+//     updateStatus('Processing audio...', statusDiv);
+//     const response = await fetch(API_URL, {
+//       method: 'POST',
+//       body: formData,
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+
+//     // Handle different response types
+//     if (options.saveToFirebase && options.returnType === 'url') {
+//       const data = await response.json();
+//       return data.download_url;
+//     } else {
+//       return await response.blob();
+//     }
+//   } catch (error) {
+//     console.error('Error processing audio:', error);
+//     throw error;
+//   }
+// }
+
+// function updateStatus(message: string, statusDiv: HTMLDivElement) {
+//   statusDiv.textContent = message;
+// }
+
+// // Initialize the application
+// function initializeApp() {
+//   const elements = initializeElements();
+//   if (elements) {
+//     initializeEventListeners(elements);
+//   } else {
+//     console.error('Failed to initialize application: missing elements');
+//   }
+// }
+
+// // Start the application when the DOM is loaded
+// document.addEventListener('DOMContentLoaded', initializeApp);
+
+
+  // fileInput.addEventListener('change', (event: Event) => {
+  //   const file = (event.target as HTMLInputElement).files?.[0];
+  //   if (file) {
+  //     uploadBtn.disabled = false;
+  //     originalAudio.src = URL.createObjectURL(file);
+  //   } else {
+  //     uploadBtn.disabled = true;
+  //   }
+  // });
