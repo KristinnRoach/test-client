@@ -37,99 +37,112 @@
         <button id="uploadBtn">Process Audio</button>
       </div>
 
-      <div class="options-section">
-        <h2>Processing Options</h2>
-        <div class="option">
-          <input type="checkbox" id="normalizeOpt" checked />
-          <label for="normalizeOpt">Normalize Audio</label>
+      <div class="flex-row">
+        <!-- <div class="flex-col">
+          <h2>Original Audio</h2>
+          <div id="originalWaveform"></div>
         </div>
-        <div class="option">
-          <input type="checkbox" id="trimOpt" checked />
-          <label for="trimOpt">Trim Silence</label>
-        </div>
-        <div class="option">
-          <input type="checkbox" id="tuneOpt" />
-          <label for="tuneOpt">Auto-tune</label>
-        </div>
+        <div class="flex-col">
+          <h2>Processed Audio</h2>
+          <div id="processedWaveform"></div>
+        </div> -->
+        <div class="options-section">
+          <h2>Processing Options</h2>
+          <div class="option">
+            <input type="checkbox" id="normalizeOpt" checked />
+            <label for="normalizeOpt">Normalize Audio</label>
+          </div>
+          <div class="option">
+            <input type="checkbox" id="trimOpt" checked />
+            <label for="trimOpt">Trim Silence</label>
+          </div>
+          <div class="option">
+            <input type="checkbox" id="tuneOpt" />
+            <label for="tuneOpt">Auto-tune</label>
+          </div>
 
-        <div class="option">
-          <input type="checkbox" id="saveToFirebaseOpt" />
-          <label for="saveToFirebaseOpt">Save to Firebase</label>
-        </div>
+          <div class="option">
+            <input type="checkbox" id="saveToFirebaseOpt" />
+            <label for="saveToFirebaseOpt">Save to Firebase</label>
+          </div>
 
-        <div class="option">
-          <label for="formatOpt">Output Format:</label>
-          <select id="formatOpt">
-            <option value="wav">WAV</option>
-            <option value="mp3">MP3</option>
-            <option value="webm">WebM</option>
-          </select>
-        </div>
+          <div class="option">
+            <label for="formatOpt">Output Format:</label>
+            <select id="formatOpt">
+              <option value="wav">WAV</option>
+              <option value="mp3">MP3</option>
+              <option value="webm">WebM</option>
+            </select>
+          </div>
 
-        <div class="option fade-control">
-          <label for="fadeOutTime" style="font-size: 0.9em; color: #666"
-            >Release Time (s):</label
-          >
-          <input
-            type="range"
-            id="fadeOutTime"
-            min="0.01"
-            max="1"
-            step="0.01"
-            value="0.1"
-            style="width: 100px; opacity: 0.8"
-          />
-          <span id="fadeOutValue" style="font-size: 0.8em; color: #666"></span>
+          <div class="option fade-control">
+            <label for="fadeOutTime" style="font-size: 0.9em; color: #666"
+              >Release Time (s):</label
+            >
+            <input
+              type="range"
+              id="fadeOutTime"
+              min="0.01"
+              max="1"
+              step="0.01"
+              value="0.1"
+              style="width: 100px; opacity: 0.8"
+            />
+            <span
+              id="fadeOutValue"
+              style="font-size: 0.8em; color: #666"
+            ></span>
 
-          <!-- <div class="pitch-section" style="display: none">
+            <!-- <div class="pitch-section" style="display: none">
             <label for="targetPitch">Target Pitch (Hz):</label>
             <input type="number" id="targetPitch" value="261.63" step="0.01" />
             <span>(261.63 Hz = C4)</span>
           </div> -->
 
-          <div class="pitch-section" style="display: none">
-            <label for="targetPitch">Target Note:</label>
-            <select id="targetPitch" class="note-select">
-              <optgroup label="Octave 2">
-                <option value="65.41">C2</option>
-                <option value="73.42">D2</option>
-                <option value="82.41">E2</option>
-                <option value="87.31">F2</option>
-                <option value="98.00">G2</option>
-                <option value="110.00">A2</option>
-                <option value="123.47">B2</option>
-              </optgroup>
-              <optgroup label="Octave 3">
-                <option value="130.81">C3</option>
-                <option value="146.83">D3</option>
-                <option value="164.81">E3</option>
-                <option value="174.61">F3</option>
-                <option value="196.00">G3</option>
-                <option value="220.00">A3</option>
-                <option value="246.94">B3</option>
-              </optgroup>
-              <optgroup label="Octave 4">
-                <option value="261.63" selected>C4 (Middle C)</option>
-                <option value="293.66">D4</option>
-                <option value="329.63">E4</option>
-                <option value="349.23">F4</option>
-                <option value="392.00">G4</option>
-                <option value="440.00">A4</option>
-                <option value="493.88">B4</option>
-              </optgroup>
-              <optgroup label="Octave 5">
-                <option value="523.25">C5</option>
-                <option value="587.33">D5</option>
-                <option value="659.26">E5</option>
-                <option value="698.46">F5</option>
-                <option value="783.99">G5</option>
-                <option value="880.00">A5</option>
-                <option value="987.77">B5</option>
-              </optgroup>
-              <optgroup label="Octave 6">
-                <option value="1046.50">C6</option>
-              </optgroup>
-            </select>
+            <div class="pitch-section" style="display: none">
+              <label for="targetPitch">Target Note:</label>
+              <select id="targetPitch" class="note-select">
+                <optgroup label="Octave 2">
+                  <option value="65.41">C2</option>
+                  <option value="73.42">D2</option>
+                  <option value="82.41">E2</option>
+                  <option value="87.31">F2</option>
+                  <option value="98.00">G2</option>
+                  <option value="110.00">A2</option>
+                  <option value="123.47">B2</option>
+                </optgroup>
+                <optgroup label="Octave 3">
+                  <option value="130.81">C3</option>
+                  <option value="146.83">D3</option>
+                  <option value="164.81">E3</option>
+                  <option value="174.61">F3</option>
+                  <option value="196.00">G3</option>
+                  <option value="220.00">A3</option>
+                  <option value="246.94">B3</option>
+                </optgroup>
+                <optgroup label="Octave 4">
+                  <option value="261.63" selected>C4 (Middle C)</option>
+                  <option value="293.66">D4</option>
+                  <option value="329.63">E4</option>
+                  <option value="349.23">F4</option>
+                  <option value="392.00">G4</option>
+                  <option value="440.00">A4</option>
+                  <option value="493.88">B4</option>
+                </optgroup>
+                <optgroup label="Octave 5">
+                  <option value="523.25">C5</option>
+                  <option value="587.33">D5</option>
+                  <option value="659.26">E5</option>
+                  <option value="698.46">F5</option>
+                  <option value="783.99">G5</option>
+                  <option value="880.00">A5</option>
+                  <option value="987.77">B5</option>
+                </optgroup>
+                <optgroup label="Octave 6">
+                  <option value="1046.50">C6</option>
+                </optgroup>
+              </select>
+            </div>
           </div>
         </div>
 

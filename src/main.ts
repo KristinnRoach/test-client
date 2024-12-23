@@ -34,10 +34,10 @@ interface ProcessingOptions {
   normalize: boolean;
   trim: boolean;
   tune: boolean;
-  // sampleName?: string;
-  saveToFirebase?: boolean;
+  sampleName?: string;
   targetPitchHz?: number;
   outputFormat?: 'wav' | 'mp3' | 'webm';
+  saveToFirebase?: boolean;
   returnType?: 'url' | 'blob';
 }
 
@@ -126,6 +126,8 @@ function initializeEventListeners(elements: DOMElements) {
     const file = fileInput.files?.[0];
     if (!file) return;
 
+    uploadBtn.classList.add('processing');
+
     try {
       // Gather options
       const options: ProcessingOptions = {
@@ -141,28 +143,25 @@ function initializeEventListeners(elements: DOMElements) {
         options.targetPitchHz = parseFloat(targetPitchInput.value);
       }
 
+      console.log('Processing options:', options);
+
       // Process the audio
       const result = await processAudio(file, options, statusDiv);
 
-      // // // Handle the result
-      // if (typeof result === 'string') {
-      //   // Firebase URL
-      //   processedAudio.src = result;
-      //   updateStatus('Audio processed and uploaded to Firebase', statusDiv);
-      // } else {
-      //   // Blob result
-      //   processedAudio.src = URL.createObjectURL(result);
-      //   updateStatus('Audio processed successfully', statusDiv);
-      // }
+      console.log('Result: ', result, 'type: ', typeof result);
 
       // Handle the result
       if (typeof result === 'string') {
-        // Firebase URL
+        // Set audio src directly from URL
         processedAudio.src = result;
-        const response = await fetch(result);
-        const audioBlob = await response.blob();
+
+        // Create blob from URL
+        const audioRequest = await fetch(result);
+        const audioBlob = await audioRequest.blob();
         await updateAudioBuffer(audioBlob);
+
         updateStatus('Audio processed and uploaded to Firebase', statusDiv);
+        createAndDisplayDownloadLink(result);
       } else {
         // Blob result
         processedAudio.src = URL.createObjectURL(result);
@@ -183,7 +182,7 @@ async function processAudio(
   file: File,
   options: ProcessingOptions,
   statusDiv: HTMLDivElement
-): Promise<Blob> {
+): Promise<Blob | string> {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('options', JSON.stringify(options));
@@ -200,7 +199,14 @@ async function processAudio(
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.blob();
+    // Check if response is JSON (Firebase URL) or blob
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const data = await response.json();
+      return data.url; // Return the Firebase URL
+    }
+
+    return await response.blob(); // Return blob for direct audio
   } catch (error) {
     console.error('Error processing audio:', error);
     throw error;
@@ -243,10 +249,6 @@ async function initializeApp() {
     await testServerConnection(elements.statusDiv);
     initializeEventListeners(elements);
 
-    // Initialize status log component
-    //const statusLogRoot = createRoot(document.getElementById('status-log')!);
-    //statusLogRoot.render(<StatusLog />);
-
     // Initialize the recorder
     initializeRecorder(
       elements.recordBtn,
@@ -276,3 +278,22 @@ async function initializeApp() {
 
 // Start the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', initializeApp);
+
+function createAndDisplayDownloadLink(url: string) {
+  const downloadLink = document.createElement('a');
+  downloadLink.href = url;
+  downloadLink.download = 'firebase-download-test.wav';
+  downloadLink.textContent = 'Download Processed Audio';
+  downloadLink.style.display = 'block';
+  downloadLink.style.marginTop = '10px';
+
+  const statusDiv = document.getElementById('status');
+  if (statusDiv) {
+    console.log('Appending download link');
+    console.log('downloadLink: ', downloadLink, ', input url: ', url);
+    console.log(statusDiv);
+    statusDiv.appendChild(downloadLink);
+  } else {
+    console.error('Status div not found');
+  }
+}
