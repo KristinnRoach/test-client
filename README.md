@@ -1,1 +1,1 @@
-## Test client for Sample Prepper
+## Test client for Sample Prepper REI504M course project
