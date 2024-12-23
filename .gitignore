@@ -7,6 +7,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+*.note.txt
+
+src/trashbin
+src/trashbin/*
+
 node_modules
 dist
 dist-ssr

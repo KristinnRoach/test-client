@@ -5,7 +5,7 @@ interface AudioState {
   buffer: AudioBuffer | null;
   fadeOutTime: number;
   masterCompressor: DynamicsCompressorNode | null;
-  sampleName: string;
+  // sampleName: string;
 }
 
 interface ActiveNote {
@@ -18,7 +18,7 @@ const audioState: AudioState = {
   buffer: null,
   fadeOutTime: 0.15, // 100ms default fadeout
   masterCompressor: null,
-  sampleName: '',
+  // sampleName: '',
 };
 
 const activeNotes = new Map<string, ActiveNote>();

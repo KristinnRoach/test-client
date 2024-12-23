@@ -5,8 +5,6 @@ import {
   updateAudioBuffer,
 } from './playback';
 import { initializeRecorder } from './recorder';
-// import { createRoot } from 'react-dom/client';
-// import StatusLog from './StatusLog';
 
 // API endpoint from the notebook
 // const LOCAL_API_URL = 'http://localhost:5001/process';
@@ -15,7 +13,7 @@ const COLAB_API_URL = 'https://singular-roughy-humane.ngrok-free.app/process';
 // DOM Elements type definition
 interface DOMElements {
   fileInput: HTMLInputElement;
-  sampleNameInput: HTMLInputElement;
+  // sampleNameInput: HTMLInputElement;
   uploadBtn: HTMLButtonElement;
   normalizeOpt: HTMLInputElement;
   trimOpt: HTMLInputElement;
@@ -36,7 +34,7 @@ interface ProcessingOptions {
   normalize: boolean;
   trim: boolean;
   tune: boolean;
-  sampleName?: string;
+  // sampleName?: string;
   saveToFirebase?: boolean;
   targetPitchHz?: number;
   outputFormat?: 'wav' | 'mp3' | 'webm';
@@ -47,7 +45,7 @@ interface ProcessingOptions {
 function initializeElements(): DOMElements | null {
   const elements = {
     fileInput: document.getElementById('audioFile') as HTMLInputElement,
-    sampleNameInput: document.getElementById('sampleName') as HTMLInputElement,
+    // sampleNameInput: document.getElementById('sampleName') as HTMLInputElement,
     uploadBtn: document.getElementById('uploadBtn') as HTMLButtonElement,
     normalizeOpt: document.getElementById('normalizeOpt') as HTMLInputElement,
     trimOpt: document.getElementById('trimOpt') as HTMLInputElement,
@@ -87,7 +85,7 @@ function initializeElements(): DOMElements | null {
 function initializeEventListeners(elements: DOMElements) {
   const {
     fileInput,
-    sampleNameInput,
+    // sampleNameInput,
     uploadBtn,
     tuneOpt,
     pitchSection,
@@ -116,19 +114,6 @@ function initializeEventListeners(elements: DOMElements) {
     } else {
       uploadBtn.disabled = true;
     }
-  });
-
-  // Sample name input handler
-  sampleNameInput.addEventListener('input', (event: Event) => {
-    const sampleName = (event.target as HTMLInputElement).value;
-    if (sampleName) {
-      //   sampleNameInput.setCustomValidity('');
-      let dummy = 0;
-      dummy = 3;
-    }
-    // else {
-    //   sampleNameInput.setCustomValidity('Sample name is required');
-    // }
   });
 
   // Auto-tune option toggle
